@@ -6,3 +6,4 @@ terraform/.terraform/
 terraform/terraform.tfstate
 terraform/terraform.tfstate.*
 terraform/crash.log
+terraform-state/

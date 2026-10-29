@@ -6,9 +6,17 @@ terraform {
     }
   }
 }
+terraform {
+  backend "local" {}
+}
+variable "kube_config_path" {
+  description = "Path to the Kubernetes kubeconfig file"
+  type        = string
+  default     = "~/.kube/config"
+}
 
 provider "kubernetes" {
-  config_path = "~/.kube/config"
+  config_path = var.kube_config_path
 }
 
 resource "kubernetes_deployment" "app" {
@@ -38,7 +46,7 @@ resource "kubernetes_deployment" "app" {
       spec {
         container {
           name              = "devops-mini-app"
-          image             = "devops-mini-project:1.0"
+          image             = "devops-mini-project:6"
           image_pull_policy = "IfNotPresent"
 
           port {
