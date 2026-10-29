@@ -1,3 +1,4 @@
+
 pipeline {
     agent any
 
@@ -23,14 +24,34 @@ pipeline {
                 '''
             }
         }
+
+        stage('Terraform Plan') {
+            steps {
+                dir('terraform') {
+                    sh '''
+                        terraform init \
+                          -input=false \
+                          -reconfigure \
+                          -backend-config="path=/var/jenkins_home/terraform-state/terraform.tfstate"
+
+                        terraform validate
+
+                        terraform plan \
+                          -input=false \
+                          -var="kube_config_path=/var/jenkins_home/.kube/jenkins-config"
+                    '''
+                }
+            }
+        }
     }
 
     post {
         success {
-            echo 'CI Pipeline completed successfully!'
+            echo 'CI pipeline and Terraform plan completed successfully!'
         }
         failure {
             echo 'Pipeline failed. Check the stage logs.'
         }
     }
 }
+
