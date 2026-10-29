@@ -14,7 +14,11 @@ variable "kube_config_path" {
   type        = string
   default     = "~/.kube/config"
 }
-
+variable "image_tag" {
+  description = "Docker image tag to deploy"
+  type        = string
+  default     = "6"
+}
 provider "kubernetes" {
   config_path = var.kube_config_path
 }
@@ -46,7 +50,7 @@ resource "kubernetes_deployment" "app" {
       spec {
         container {
           name              = "devops-mini-app"
-          image             = "devops-mini-project:6"
+          image             = "devops-mini-project:${var.image_tag}"
           image_pull_policy = "IfNotPresent"
 
           port {
