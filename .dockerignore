@@ -3,3 +3,11 @@
 .pytest_cache/
 __pycache__/
 *.pyc
+
+# Terraform state and local files
+terraform-state/
+terraform/.terraform/
+terraform/*.tfstate
+terraform/*.tfstate.*
+terraform/*.bak
+terraform/tfplan
